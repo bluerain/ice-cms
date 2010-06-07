@@ -4,17 +4,19 @@ class Authentication {
 	public $error;
 	
 	public function __construct() {
-		session_start();
+		if(!session_name()) { // if session don't exist
+			session_start();
+		}
 		if(!isset($_SESSION['userlevel'])) $_SESSION['userlevel'] = 0;
 		
 		return true;
 	}
 	public function init($req_userlevel){
 		if($_SESSION['userlevel']==0 && $req_userlevel > 0) {
-			if(file_exists('./ad-login.php')) {
-				header("Location: ./ad-login.php?next=".urlencode($_SERVER['PHP_SELF'])."&msg=You+need+to+login+to+view+this+resource.");
+			if(file_exists('icy-login.php')) {
+				header("Location: ./icy-login.php?next=".urlencode($_SERVER['PHP_SELF'])."&msg=You+need+to+login+to+view+this+resource.");
 			} else {
-				header("Location: ./admin/ad-login.php?next=".urlencode($_SERVER['PHP_SELF'])."&msg=You+need+to+login+to+view+this+resource.");
+				header("Location: ./admin/icy-login.php?next=".urlencode($_SERVER['PHP_SELF'])."&msg=You+need+to+login+to+view+this+resource.");
 			}
 			die();
 		}

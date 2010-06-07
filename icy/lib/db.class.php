@@ -1,5 +1,5 @@
 <?php
-class Database {
+final class Database {
 	
 	/*******************************************
 	* Configure the database here
@@ -32,7 +32,6 @@ class Database {
 	public function error(){
 		return mysql_error($this->db);
 	}
-	
 }
 $db = new Database;
 
