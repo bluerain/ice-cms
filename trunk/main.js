@@ -6,9 +6,9 @@ $(window).load(function() {
 });
 
 var msgs = [
-"Company name inc. nominated for an oscar",
-"Company name inc. CIO quits, begin to work for GOOGly",
-'The biggest competitor of Company name inc. filed for bankrupcy today. "We don\' want anymore to get hurt" says former president.'
+"Company name inc. nominated for an oscar.",
+"Company name inc. CIO quits, begin to work for GOOGly.",
+'Our biggest competitor closed today. "We don\'t want anymore to get hurt", ex-president comments.'
 ]
 function change() {
 	$scroller.animate({opacity: 0}, 300, function() {
