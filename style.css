@@ -27,8 +27,9 @@ h2 {
 	font-size:32.46px;
 	line-height:1;
 	font-weight:normal;
-	white-space:nowrap;
+	
 }
+.hl {white-space:nowrap;}
 h4 {
 	margin:20px 0;
 	font-weight:normal;
