@@ -8,7 +8,7 @@ system folder. WITH a trailing slash.
 Eg.
 $config['baseurl'] = 'http://www.example.com/';
 *********************************************/
-$config['baseurl']		= 'http://localhost/us2/ice-cms/'; //NOTE:  
+$config['baseurl']		= 'http://localhost/us2/ice-cms/'; 
 
 // System folder. Default 'icy/'. WITH a trailing slash!
 $config['sys_folder']	= 'icy/';

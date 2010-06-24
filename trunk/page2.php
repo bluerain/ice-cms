@@ -8,13 +8,13 @@
 <body>
 <div class="header">
 	<div class="center">
-		<a href="./"><h1>Company Name, inc.</h1></a>
+		<h1><a href="./">Company Name, inc.</a></h1>
         <a href="./" class="menu">First page</a>
     </div>
 </div>
 <div class="center">
 	<div class="divider"></div>
-<p>
+
 <h2>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h2>
 <div class="divider"></div>
 <p>
