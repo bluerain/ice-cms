@@ -58,7 +58,7 @@ $icy->load("index");
 </div>
 <div class="footer">
 </div>
-</div>
+
 <?php if(!$icy->is_editing()) : ?>
 	<script type="text/javascript" src="icy/lib/jquery.js"></script>
 	<script type="text/javascript" src="main.js"></script>

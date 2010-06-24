@@ -33,7 +33,7 @@ class ICYCMS {
 	public function load($page_name, $cache = 'n', $lifetime = 0) {
 		global $config, $db, $pageContent;
 		if($cache==='n') { $cache = (boolean) $config['use_cache']; }
-		$this->currentPage = $page_name;
+		$this->currentPage = $this->sanitize($page_name);
 		
 		//Cache
 		if($cache==true) {
@@ -46,18 +46,7 @@ class ICYCMS {
 				ob_start("icyOBcallback");	
 			}
 		}
-		
-		//Create the array of page fields
-		$sql = "SELECT content, fieldname FROM ". $config['content_table'] ." WHERE pagename = '$page_name'";
-		$db->connect();
-		$res = $db->query($sql);
-		
-		if($res) {
-			while($row = mysql_fetch_array($res)) {
-				$pageContent[$row['fieldname']] = $row['content'];
-			}
-		}
-		$db->close();
+		$this->loadPageData();
 	}
 
 	public function head($include_jquery = true) {
@@ -76,6 +65,7 @@ class ICYCMS {
 				return false;
 				break;
 		}
+		$field_name = $this->sanitize($field_name);
 		echo '<', $element, ' ';
 		if(is_array($attrs) && count($attrs) > 0) {
 			foreach($attrs as $key => $val) {
@@ -85,7 +75,6 @@ class ICYCMS {
 		echo ">";
 		if(!isset($pageContent[$field_name])) {
 			$this->createDBrecord($field_name, $type);
-			echo "Empty Element";
 		} else {
 			echo $pageContent[$field_name];
 		}
@@ -95,26 +84,49 @@ class ICYCMS {
 	public function img($field_name, $height=0, $width=0, $attrs = array()) {
 		
 	}
-	private function createDBrecord($field_name, $type) {
+	public function createDBrecord($field_name, $type) {
 		global $config, $db;
 		$cp = $this->currentPage;
-		if($config['dev_mode']==false) { return false; }
-		$sql = 'INSERT INTO ' . $config['content_table'] . " (fieldname, content, pagename, fieldtype) VALUES ('$field_name', 'Empty Element', '$cp', '$type');";
+		if($config['dev_mode']==false) {
+			echo 'Dev-mode off -- Record creation failed';
+			return false;
+		}
+		$sql = 'INSERT IGNORE INTO ' . $config['content_table'] . " (fieldname, content, pagename, fieldtype) VALUES ('$field_name', 'Empty Element', '$cp', '$type');";
 		$db->connect();
 		$r = $db->query($sql);
 		if(!$r) {
-			echo "Database Error";
+			echo 'Database Error';
 		}
+		echo "Empty Element";
 		return true;
+	}
+	
+	public function loadPageData() {
+		//Create the array of page fields
+		global $db, $config, $pageContent;
+		$sql = "SELECT content, fieldname FROM ". $config['content_table'] ." WHERE pagename = '$this->currentPage'";
+		$db->connect();
+		$res = $db->query($sql);
+		
+		if($res) {
+			while($row = mysql_fetch_array($res)) {
+				$pageContent[$row['fieldname']] = $row['content'];
+			}
+		}
+		$db->close();
 	}
 	
 	public function is_editing() {
 		return $this->in_editor_mode;	
 	}
+	public function sanitize($str) {
+		$reg = '/[^A-Za-z0-9_]/';
+		return preg_replace($reg,'',$str);
+	}
 	
 }
 
-if($_REQUEST['edit']=="true") {
+if($_REQUEST['edit']=="true") { // This is just for now
 	require_once('editor/editor.php');
 	$icy = new ICYCMSEDIT();
 } else {
